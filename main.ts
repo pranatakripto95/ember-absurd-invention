@@ -54,6 +54,16 @@ const OUT_PATH = "/output/entry.txt";
 // characters, not only white space, no trailing newline to inflate
 // the byte count. Checked in bytes as well as in characters: the
 // gate counts characters, but the exact-tie break counts bytes.
+//
+// Revision 2 (25 Nov ~19:15 WIB): explicit whitespace-only guard.
+// The checks below already reject a whitespace-only string through
+// trim() !== PITCH, but that is incidental — this guard states the
+// rule outright and refuses anything whose visible content is empty,
+// so a pitch of spaces alone can never slip through on length alone.
+if (PITCH.trim().length === 0) {
+  throw new Error("refusing to write an entry that is only whitespace");
+}
+
 if (
   PITCH.length < 1 ||
   PITCH.length > 220 ||
